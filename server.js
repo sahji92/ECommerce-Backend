@@ -13,6 +13,9 @@ mongoConnection(process.env.URI)
 //12-13--> defining stretegy of passport then initialize it in our App.
 //we are configuring(defining stretegy, etcc) in passport .js so we dont have to write
 //tedious code here in server.js
+
+app.use('/files',express.static('uploads'))
+
 initializePassport(passport);
 app.use(passport.initialize())
 
