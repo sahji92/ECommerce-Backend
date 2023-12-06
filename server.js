@@ -1,19 +1,31 @@
 const express=require('express')
 const cors=require('cors')
 const mongoConnection=require('./connection');
-const routes = require('./routes/index');
+var session = require('express-session');
+const routes = require('./routes');
 const { initializePassport } = require('./passport');
-const passport=require('passport')
+const passport=require('passport');
 require('dotenv').config()
 
 
 const app=express();
-app.use(cors())
+app.use(cors({
+    origin: true,
+    credentials: true
+}))
 mongoConnection(process.env.URI)
 //12-13--> defining stretegy of passport then initialize it in our App.
 //we are configuring(defining stretegy, etcc) in passport .js so we dont have to write
 //tedious code here in server.js
 
+app.use(session({
+    secret: 'keyboard cat',
+    resave: false,
+    saveUninitialized: true,
+    cookie: { 
+        secure: false,
+    },
+}))
 app.use('/files',express.static('uploads'))
 
 initializePassport(passport);
