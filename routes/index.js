@@ -41,5 +41,18 @@ router.post('/upload', passport.authenticate('jwt', {session: false}), upload.si
         data: `${process.env.BASE_URL}/files/${req.file.filename}`
     })
 })
+//for multiple images upload in addProduct page
+router.post('/upload-product-images', passport.authenticate('jwt', {session: false}), upload.any('productImages'),(req, res) => {
+    console.log(req.files)
+    let uploadedProductImages = {}
+    req.files.forEach((item,index) => {
+        uploadedProductImages[`productImage${index}`] = `${process.env.BASE_URL}/files/${item.filename}`
+    })
+    return res.status(201).json({
+        statusCode: 201,
+        message: 'Product images uploaded successfully',
+        data: uploadedProductImages
+    })
+})
 
 module.exports = router
