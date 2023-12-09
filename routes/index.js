@@ -1,5 +1,5 @@
 const express = require('express')
-const { createUser,loginUser, getUsers } = require('../controllers/userController')
+const { createUser,loginUser, getUsers, validateEmail, validateOtp, resetpassword } = require('../controllers/userController')
 const passport = require('passport')
 const multer = require("multer")
 const { addBanner, getBanners, updateBanner, deleteBanner } = require('../controllers/bannerController')
@@ -18,19 +18,19 @@ const upload = multer({ storage })
 router.post('/create-user',createUser)
 router.post('/login-user',loginUser)
 router.get('/get-users', passport.authenticate('jwt', {session: false}),getUsers)
+router.get('/validate-email',validateEmail)
+router.get('/validate-otp',validateOtp)
+router.post('/reset-password',resetpassword)
+
 router.post('/add-banner', passport.authenticate('jwt', {session: false}), addBanner)
-
 router.get('/get-banners',getBanners)
-
 router.get('/get-banner/:bannerId',getBanners)
-
 router.delete('/delete-banner/:bannerId', passport.authenticate('jwt', {session: false}),deleteBanner)
-
 router.put('/update-banner/:bannerId', passport.authenticate('jwt', {session: false}),updateBanner)
 
 router.post('/add-product', passport.authenticate('jwt', {session: false}),addProduct)
-
 router.get('/get-products',getProducts)
+router.get('/get-product/:productId',getProducts)
 router.put('/update-product/:productId', passport.authenticate('jwt', {session: false}),updateProduct)
 
 router.post('/upload', passport.authenticate('jwt', {session: false}), upload.single('banner'),(req, res) => {
