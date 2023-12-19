@@ -5,6 +5,11 @@ const multer = require("multer")
 const { addBanner, getBanners, updateBanner, deleteBanner } = require('../controllers/bannerController')
 const { updateProduct, getProducts, addProduct } = require('../controllers/productController')
 const router = express.Router()
+
+const cartRoutes=require('./cartRoutes')
+const googleAuthRoutes=require('./googleLoginRoutes')
+
+
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
         cb(null, './uploads')
@@ -54,5 +59,8 @@ router.post('/upload-product-images', passport.authenticate('jwt', {session: fal
         data: uploadedProductImages
     })
 })
+
+router.use(cartRoutes)
+router.use(googleAuthRoutes)
 
 module.exports = router

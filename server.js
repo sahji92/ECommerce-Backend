@@ -3,7 +3,7 @@ const cors=require('cors')
 const mongoConnection=require('./connection');
 var session = require('express-session');
 const routes = require('./routes');
-const { initializePassport } = require('./passport');
+const { initializePassport, initializeGoogleAuth } = require('./passport');
 const passport=require('passport');
 require('dotenv').config()
 
@@ -29,7 +29,12 @@ app.use(session({
 app.use('/files',express.static('uploads'))
 
 initializePassport(passport);
-app.use(passport.initialize())
+initializeGoogleAuth(passport)
+
+
+app.use(passport.initialize())//for jwt
+app.use(passport.session)//for googleAuth
+
 
 app.use(express.json())
 app.use(express.urlencoded({extended: true}))
