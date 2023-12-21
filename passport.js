@@ -3,6 +3,7 @@ const Users = require('./models/users');
 const Customers = require('./models/customers');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 
+
 const initializePassport = (passport) => {
     var JwtStrategy = require('passport-jwt').Strategy,
     ExtractJwt = require('passport-jwt').ExtractJwt;
@@ -25,6 +26,7 @@ const initializePassport = (passport) => {
         })
     }));
 }
+
 const initializeGoogleAuth = (passport) =>{
     passport.use(new GoogleStrategy({
         clientID: process.env.GOOGLE_ID,
@@ -34,8 +36,8 @@ const initializeGoogleAuth = (passport) =>{
        function(accessToken, refreshToken, profile, done) {
         console.log('Profile we got at initialization of oAuth ',profile)
         console.log('Token and refresh token of oAuth ', accessToken, refreshToken)
-        // findOrCreateCustomer(profile,done)
-        done(null,profile)
+        findOrCreateCustomer(profile,done)
+        // done(null,profile)
       }
     ));
 
@@ -49,34 +51,35 @@ const initializeGoogleAuth = (passport) =>{
         done(null,user)
     })
 }
-// const findOrCreateCustomer = (profile, done) => {
-//     Customers.findOne({ googleId: profile.id })
-//         .then(customer => {
-//             if (customer) {
-//                 console.log('Found customer profile', customer);
-//                 return done(null, customer);
-//             } else {
-//                 console.log('Not found customer profile');
-//                 const req = {
-//                     name: profile.displayName,
-//                     googleId: profile.id,
-//                     provider: profile.provider,
-//                 };
-//                 const newCustomer = new Customers(req);
-//                 return newCustomer.save();
-//             }
-//         })
-//         .then(newCustomer => {
-//             if (newCustomer) {
-//                 console.log('Created customer profile', newCustomer);
-//                 return done(null, newCustomer);
-//             }
-//         })
-//         .catch(err => {
-//             console.log('Error in finding/creating customer', err);
-//             return done(err, null);
-//         });
-// };
+
+const findOrCreateCustomer = (profile, done) => {
+    Customers.findOne({ googleId: profile.id })
+        .then(customer => {
+            if (customer) {
+                console.log('Found customer profile', customer);
+                return done(null, customer);
+            } else {
+                console.log('Not found customer profile');
+                const req = {
+                    name: profile.displayName,
+                    googleId: profile.id,
+                    provider: profile.provider,
+                };
+                const newCustomer = new Customers(req);
+                return newCustomer.save();
+            }
+        })
+        .then(newCustomer => {
+            if (newCustomer) {
+                console.log('Created customer profile', newCustomer);
+                return done(null, newCustomer);
+            }
+        })
+        .catch(err => {
+            console.log('Error in finding/creating customer', err);
+            return done(err, null);
+        });
+};
 
 const isAuthenticatedCustomer = (req,res,next) => {
     console.log(req.user)
@@ -92,4 +95,3 @@ module.exports = {
     initializeGoogleAuth,
     isAuthenticatedCustomer
 }
-    

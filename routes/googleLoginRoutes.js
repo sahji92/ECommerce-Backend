@@ -6,10 +6,10 @@ const router = express.Router()
 
 // router.get('/auth/google',passport.authenticate('google',{ scope: ['https://www.googleapis.com/auth/plus.login']}))
 
-router.get("/auth/google", passport.authenticate('google', { scope: ['profile'] }));
+router.get("/auth/google", passport.authenticate("google", { scope: ["profile"] }));
 
 router.get('/auth/google/callback', 
-  passport.authenticate('google', { successRedirect: '/autherised-google-user', failureRedirect: '/' })
+  passport.authenticate('google', { successRedirect: "http://127.0.0.1:3000", failureRedirect: '/' })
 );
 
 router.get('/autherised-google-user', isAuthenticatedCustomer, (req,res) => {

@@ -61,7 +61,7 @@ const getCartProducts = async (req,res) => {
             return res.status(200).json({
                 statusCode: 200,
                 message: 'Cart products fetched successfully',
-                data: result
+                data: result ? result : []
             })
         })
         .catch(err => {
