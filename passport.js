@@ -49,7 +49,6 @@ const initializeGoogleAuth = (passport) =>{
         done(null,user)
     })
 }
-
 // const findOrCreateCustomer = (profile, done) => {
 //     Customers.findOne({ googleId: profile.id })
 //         .then(customer => {

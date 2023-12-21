@@ -6,6 +6,7 @@ const addToCart = async (req,res) => {
         console.log('Log for addToCart:',req.body)
 
         let cart = await Carts.findOne({customerId: req.body.customerId})
+        console.log(cart)
 
 
         req.body.productId = new mongoose.Types.ObjectId(req.body.productId)
@@ -81,12 +82,17 @@ const getCartProducts = async (req,res) => {
 
 const deleteCartProduct = async (req,res) => {
     try{
-        console.log('Log for deleteCartProduct:',req.params)
+        console.log('Log for deleteCartProduct:',req.body)
 
         let cart = await Carts.findOne({customerId: req.body.customerId})
 
+        // req.body.productId = new mongoose.Types.ObjectId(req.body.productId)
+
+        console.log('Log for deleteCartProduct:',req.body)
+
         if(cart) {
-            cart.items = cart.items.filter(item => item.productId !== req.body.productId)
+            cart.items = cart.items.filter(item => item.productId.toString() !== req.body.productId)
+            console.log(cart)
             await cart.save()
             .then(result => {
                 return res.status(200).json({
@@ -107,7 +113,6 @@ const deleteCartProduct = async (req,res) => {
                 message: 'Product is not present in cart'
             })
         }
-
     }
     catch{
         return res.status(503).json({

@@ -33,7 +33,7 @@ initializeGoogleAuth(passport)
 
 
 app.use(passport.initialize())//for jwt
-app.use(passport.session)//for googleAuth
+app.use(passport.session())//for googleAuth
 
 
 app.use(express.json())

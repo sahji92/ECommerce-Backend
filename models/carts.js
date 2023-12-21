@@ -10,7 +10,7 @@ const cartSchema = new Schema({
     items: [
         {
             productId: {
-                type: Schema.Types.ObjectId,
+                type: Schema.Types.ObjectId,//to join cart and prdct collections...carts contain multiple products
                 ref: 'Products'
             }
         }
