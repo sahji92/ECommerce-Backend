@@ -2,8 +2,8 @@ const express = require('express')
 const { createOrderFromCart, buyNowOrder, getOrders } = require('../controllers/orderController')
 const Razorpay = require('razorpay');
 var instance = new Razorpay({ 
-      key_id: '',
-      key_secret: ''
+      key_id: process.env.RAZORPAY_ID,
+      key_secret: process.env.RAZORPAY_SECRET
 })
 
 const router = express.Router()
